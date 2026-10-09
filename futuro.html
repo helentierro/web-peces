@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peces del futuro | Pezquería</title>
+<style>
+  :root {
+    --ink: #12263a; --ink-soft: #3c5a6e; --paper: #fdfcf9; --card: #ffffff;
+    --line: #d9e2ea; --accent: #1b6ca8; --accent-warm: #c25e00; --accent-deep: #0b3c5d;
+    --danger: #b3261e; --ok: #2e7d32;
+    --radius: 14px; --maxw: 1120px;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --sans: "Avenir Next", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--sans); color: var(--ink); background: var(--paper); line-height: 1.62; font-size: 17px; }
+  a { color: var(--accent); }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  nav.site { position: sticky; top: 0; z-index: 50; background: rgba(253,252,249,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  nav.site .wrap { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+  .brand { font-family: var(--serif); font-weight: 700; font-size: 1.25rem; color: var(--accent-deep); text-decoration: none; }
+  .brand span { color: var(--accent-warm); }
+  .nav-links { display: flex; gap: 4px; flex-wrap: wrap; }
+  .nav-links a { text-decoration: none; color: var(--ink-soft); font-size: .92rem; font-weight: 600; padding: 8px 12px; border-radius: 999px; transition: background .2s, color .2s; }
+  .nav-links a:hover { background: #eaf3f9; color: var(--accent-deep); }
+  .nav-links a.active { background: var(--accent-deep); color: #fff; }
+
+  header.masthead {
+    background:
+      radial-gradient(1100px 420px at 78% -30%, #6a1f1a 0%, rgba(106,31,26,0) 60%),
+      linear-gradient(200deg, #3d1512 0%, #7a2f26 55%, #b3261e 100%);
+    color: #fff; padding: 72px 0 60px; position: relative; overflow: hidden;
+  }
+  .kicker { display: inline-block; font-size: .74rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #ffd9a8; border: 1px solid rgba(255,217,168,.45); padding: 5px 12px; border-radius: 999px; margin-bottom: 20px; }
+  .masthead h1 { font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.06; margin: 0 0 16px; max-width: 22ch; letter-spacing: -.5px; }
+  .standfirst { font-size: 1.14rem; max-width: 62ch; color: #f0dcd8; margin: 0; }
+  .meta-row { margin-top: 30px; display: flex; gap: 28px; flex-wrap: wrap; font-size: .86rem; color: #e0bdb6; }
+  .meta-row b { display: block; color: #fff; font-size: 1.05rem; font-family: var(--serif); }
+
+  section { padding: 56px 0 8px; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid var(--ink); padding-bottom: 10px; margin-bottom: 28px; }
+  .sec-head h2 { font-family: var(--serif); font-size: 1.9rem; margin: 0; letter-spacing: -.3px; }
+  .sec-head .num { font-family: var(--serif); font-size: 1.1rem; color: var(--accent-warm); font-weight: 700; }
+  .lead { font-size: 1.08rem; max-width: 70ch; }
+
+  /* Status bars */
+  .status-block { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 28px; margin-top: 26px; }
+  .status-block h3 { font-family: var(--serif); font-size: 1.25rem; margin: 0 0 4px; color: var(--accent-deep); }
+  .status-block > p { font-size: .95rem; color: var(--ink-soft); margin: 0 0 22px; max-width: 70ch; }
+  .stack-bar { display: flex; height: 44px; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+  .stack-bar span { display: flex; align-items: center; justify-content: center; color: #fff; font-size: .85rem; font-weight: 700; min-width: 0; overflow: hidden; white-space: nowrap; }
+  .sb-underfished { background: var(--ok); }
+  .sb-max { background: #f0a202; }
+  .sb-overfished { background: var(--danger); }
+  .legend { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 14px; font-size: .87rem; color: var(--ink-soft); }
+  .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 7px; vertical-align: -1px; }
+  .timeline { margin-top: 26px; }
+  .timeline-row { display: grid; grid-template-columns: 88px 1fr; gap: 18px; padding: 14px 0; border-bottom: 1px dashed var(--line); }
+  .timeline-row:last-child { border-bottom: none; }
+  .timeline-row .yr { font-family: var(--serif); font-weight: 700; color: var(--accent-warm); font-size: 1.05rem; }
+  .timeline-row p { margin: 0; font-size: .96rem; color: var(--ink-soft); }
+  .timeline-row p b { color: var(--ink); }
+
+  /* Threat cards */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; margin-top: 28px; }
+  .threat { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; display: flex; flex-direction: column; gap: 10px; transition: box-shadow .25s ease, transform .25s ease; }
+  .threat:hover { box-shadow: 0 14px 32px rgba(18,38,58,.10); transform: translateY(-3px); }
+  .threat h3 { font-family: var(--serif); font-size: 1.28rem; margin: 0; color: var(--accent-deep); }
+  .threat p { margin: 0; font-size: .97rem; color: var(--ink-soft); }
+  .threat .sev { align-self: flex-start; font-size: .68rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; padding: 4px 9px; border-radius: 6px; }
+  .sev.high { background: #fbe3e1; color: #8c1d18; }
+  .sev.med { background: #fdf0d5; color: #8a5a00; }
+  .threat .stat { margin-top: auto; padding-top: 12px; border-top: 1px dashed var(--line); font-size: .88rem; }
+  .threat .stat b { font-family: var(--serif); font-size: 1.15rem; color: var(--accent); display: block; }
+
+  /* Species table */
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); margin-top: 26px; }
+  table { border-collapse: collapse; width: 100%; min-width: 700px; font-size: .95rem; }
+  caption { text-align: left; padding: 16px 18px 12px; font-size: .84rem; color: var(--ink-soft); font-style: italic; }
+  th, td { padding: 13px 16px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { background: var(--accent-deep); color: #fff; font-size: .76rem; letter-spacing: .09em; text-transform: uppercase; font-weight: 700; border-bottom: none; }
+  tbody tr:nth-child(even) { background: #f6f9fb; }
+  tbody tr:hover { background: #eaf3f9; }
+  .pill { display: inline-block; font-size: .74rem; font-weight: 800; letter-spacing: .05em; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+  .pill.cr { background: #fbe3e1; color: #8c1d18; }
+  .pill.en { background: #fdf0d5; color: #8a5a00; }
+  .pill.vu { background: #fdf6e0; color: #7a6410; }
+  .pill.nt { background: #e8f0e9; color: #2e5d33; }
+  .pill.lc { background: #eef3f6; color: #3c5a6e; }
+
+  /* Hope box */
+  .hope { background: linear-gradient(135deg, #0b3c5d, #14618f); color: #fff; border-radius: var(--radius); padding: 32px; margin-top: 26px; }
+  .hope h3 { font-family: var(--serif); font-size: 1.5rem; margin: 0 0 12px; color: #fff; }
+  .hope p { color: #d7e8f4; font-size: 1rem; max-width: 72ch; margin: 0 0 18px; }
+  .hope ul { margin: 0; padding-left: 20px; color: #d7e8f4; font-size: .97rem; }
+  .hope li { margin-bottom: 8px; }
+  .hope li b { color: #ffd9a8; }
+
+  footer.site { margin-top: 72px; background: #0b3c5d; color: #cfe2ee; padding: 44px 0 30px; }
+  footer.site h3 { color: #fff; font-family: var(--serif); font-size: 1.1rem; margin: 0 0 14px; }
+  .refs { columns: 2 300px; column-gap: 36px; font-size: .85rem; line-height: 1.7; }
+  .refs li { margin-bottom: 8px; break-inside: avoid; }
+  .refs a { color: #8ec6e8; }
+  .foot-bottom { border-top: 1px solid rgba(255,255,255,.15); margin-top: 28px; padding-top: 18px; font-size: .85rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+
+  .pagenav { display: flex; justify-content: space-between; gap: 16px; margin: 56px 0 0; flex-wrap: wrap; }
+  .pagenav a { text-decoration: none; color: var(--accent-deep); font-weight: 600; font-size: .95rem; border: 1px solid var(--line); background: var(--card); padding: 14px 20px; border-radius: 10px; flex: 1 1 240px; transition: border-color .2s, background .2s; }
+  .pagenav a:hover { border-color: var(--accent); background: #f2f7fa; }
+  .pagenav a small { display: block; color: var(--ink-soft); font-weight: 400; font-size: .82rem; }
+
+  @media (max-width: 760px) {
+    body { font-size: 16px; }
+    nav.site .wrap { height: auto; flex-direction: column; gap: 8px; padding: 10px 16px; }
+    header.masthead { padding: 48px 0 40px; }
+    .stack-bar { height: 38px; font-size: .75rem; }
+    .stack-bar span { font-size: .7rem; }
+    .timeline-row { grid-template-columns: 70px 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<nav class="site">
+  <div class="wrap">
+    <a class="brand" href="index.html">🐠 Pezquer<span>ía</span></a>
+    <div class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="superpoderes.html">Superpoderes</a>
+      <a href="anatomia.html">Anatomía</a>
+      <a href="futuro.html" class="active" aria-current="page">El Futuro</a>
+    </div>
+  </div>
+</nav>
+
+<header class="masthead">
+  <div class="wrap">
+    <span class="kicker">Expediente 03 · Conservación</span>
+    <h1>Peces del futuro: amenazas y supervivencia</h1>
+    <p class="standfirst">Los océanos producen hoy más proteína animal que nunca, y aun así una fracción creciente de las poblaciones salvajes está en rojo. Esta página pone los datos sobre la mesa —sin adornos— y explica qué se puede hacer con ellos.</p>
+    <div class="meta-row">
+      <div><b>37,7 %</b> de stocks pesqueros sobreexplotados (FAO, 2021)</div>
+      <div><b>51 %</b> de la producción acuícola ya supera a la pesca de captura</div>
+      <div><b>~30 %</b> del CO₂ emitido lo absorbe el océano</div>
+      <div><b>1974→2021</b> la tendencia que preocupa a la FAO</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section>
+  <div class="sec-head"><span class="num">01</span><h2>La cuenta que no cuadra</h2></div>
+  <p class="lead">La producción pesquera y acuícola mundial marca récords año tras año, pero la forma de conseguirla está desequilibrada: la acuicultura crece mientras los stocks salvajes se sobreexplotan. Las cifras de la FAO —el informe SOFIA— son el termómetro más consultado del planeta.</p>
+
+  <div class="status-block">
+    <h3>Estado de los stocks marinos evaluados (2021)</h3>
+    <p>Reparto de las poblaciones de peces marinos que la FAO clasifica como pescadas dentro de límites biológicos sostenibles frente a las sobreexplotadas. Los datos corresponden al informe SOFIA 2024, el más reciente.</p>
+    <div class="stack-bar" role="img" aria-label="12,4 % infrapescado, 49,8 % al máximo sostenible, 37,7 % sobreexplotado">
+      <span class="sb-underfished" style="width:12.4%">12,4 %</span>
+      <span class="sb-max" style="width:49.8%">49,8 %</span>
+      <span class="sb-overfished" style="width:37.7%">37,7 %</span>
+    </div>
+    <div class="legend">
+      <span><i class="sb-underfished" style="background:var(--ok)"></i>Infrapescado (hay margen para más)</span>
+      <span><i class="sb-max" style="background:#f0a202"></i>Al máximo sostenible</span>
+      <span><i class="sb-overfished" style="background:var(--danger)"></i>Sobreexplotado</span>
+    </div>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-row">
+      <span class="yr">1974</span>
+      <p>Solo alrededor del <b>10 %</b> de los stocks evaluados se pescaba por encima de niveles biológicamente sostenibles. La pesca de captura todavía crecía con holgura.</p>
+    </div>
+    <div class="timeline-row">
+      <span class="yr">2010s</span>
+      <p>La fracción de stocks sobreexplotados roza el <b>35 %</b>, el primer techo histórico. El crecimiento de la captura salvaje se estanca: cada vez cuesta más sacar la misma cantidad de pez del mar.</p>
+    </div>
+    <div class="timeline-row">
+      <span class="yr">2021</span>
+      <p>Marca de <b>37,7 %</b> de stocks no sostenibles, frente al 35,4 % de 2019. La producción acuícola supera por primera vez a la pesca de captura en animales acuáticos, con un 51 % del total.</p>
+    </div>
+    <div class="timeline-row">
+      <span class="yr">2024</span>
+      <p>SOFIA confirma la tendencia: <b>62,3 %</b> de stocks sostenibles, 37,7 % en rojo. Las capturas de stocks sostenibles representan el <b>76,9 %</b> de las capturas mundiales ponderadas por producción.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="num">02</span><h2>Cinco amenazas, una dirección</h2></div>
+  <p class="lead">Sobreexplotación, calentamiento, acidificación, contaminación y destrucción del hábitat. Cada una tiene su propio informe científico; juntas forman el mismo vector: un océano que se calienta y se vacía al mismo tiempo.</p>
+
+  <div class="grid">
+    <article class="threat">
+      <span class="sev high">Presión alta</span>
+      <h3>Sobrepesca</h3>
+      <p>Se extraen peces más rápido de lo que las poblaciones pueden reponerse. La flota mundial se ha triplicado desde 1970 mientras la captura por unidad de esfuerzo cae en muchas pesquerías: pescar más cuesta cada vez más trabajo.</p>
+      <div class="stat"><b>37,7 %</b> de stocks marinos sobreexplotados</div>
+    </article>
+
+    <article class="threat">
+      <span class="sev high">Presión alta</span>
+      <h3>Calentamiento del océano</h3>
+      <p>El mar ha absorbido más del 90 % del exceso de calor del sistema climático. Muchas especies responden desplazándose hacia los polos o hacia aguas más profundas: migraciones forzadas que alteran cadenas alimenticias enteras.</p>
+      <div class="stat"><b>&gt;90 %</b> del calor extra atrapa el océano</div>
+    </article>
+
+    <article class="threat">
+      <span class="sev med">Presión media</span>
+      <h3>Acidificación</h3>
+      <p>Al absorber CO₂, el agua de mar se vuelve más ácida. Los organismos que construyen conchas y esqueletos de carbonato —moluscos, corales, algunos plancton— encuentran un material cada vez más escaso para edificarse.</p>
+      <div class="stat"><b>~30 %</b> del CO₂ emitido lo absorbe el océano</div>
+    </article>
+
+    <article class="threat">
+      <span class="sev med">Presión media</span>
+      <h3>Microplásticos</h3>
+      <p>Fragmentos de plástico de todos los tamaños llegan al plancton y, con él, a la cadena trófica. Se han detectado partículas en peces comerciales de todos los océanos; sus efectos fisiológicos a largo plazo aún se investigan.</p>
+      <div class="stat"><b>Cadena trófica</b> del plancton al plato</div>
+    </article>
+
+    <article class="threat">
+      <span class="sev high">Presión alta</span>
+      <h3>Pérdida de hábitat</h3>
+      <p>Manglares, praderas marinas y arrecifes de coral son la guardería del océano: allí crecen las crías de cientos de especies comerciales. Destruirlos con pesca de arrastre, dragados o contaminación deja a los peces adultos sin vivero.</p>
+      <div class="stat"><b>Guarderías</b> que sostienen la pesca costera</div>
+    </article>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="num">03</span><h2>Semáforo de especies</h2></div>
+  <p class="lead">La Lista Roja de la UICN ordena las especies por riesgo de extinción. Estos son algunos de los peces más conocidos y dónde se sitúan hoy. Las clasificaciones se revisan periódicamente: consulta la ficha de cada especie antes de citarlas.</p>
+
+  <div class="table-scroll">
+    <table>
+      <caption>Estado según la Lista Roja de la UICN (consultado en 2024). «LC» = preocupación menor; las categorías de amenaza son CR (Peligro crítico), EN (En peligro) y VU (Vulnerable).</caption>
+      <thead>
+        <tr><th scope="col">Especie</th><th scope="col">Nombre científico</th><th scope="col">Estado UICN</th><th scope="col">Amenaza principal</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Atún rojo del Atlántico</td>
+          <td><i>Thunnus thynnus</i></td>
+          <td><span class="pill lc">LC</span></td>
+          <td>Recuperándose gracias a cuotas estrictas tras el colapso de los años 90</td>
+        </tr>
+        <tr>
+          <td>Pez sierra de dientes pequeños</td>
+          <td><i>Pristis pectinata</i></td>
+          <td><span class="pill cr">CR</span></td>
+          <td>Pesca incidental y pérdida de manglares donde cría</td>
+        </tr>
+        <tr>
+          <td>Bacalao del Atlántico</td>
+          <td><i>Gadus morhua</i></td>
+          <td><span class="pill vu">VU</span></td>
+          <td>Sobrepesca histórica en el Atlántico noroeste</td>
+        </tr>
+        <tr>
+          <td>Anguila europea</td>
+          <td><i>Anguilla anguilla</i></td>
+          <td><span class="pill cr">CR</span></td>
+          <td>Pesca, barreras en ríos, parásitos y cambio climático</td>
+        </tr>
+        <tr>
+          <td>Pez luna</td>
+          <td><i>Mola mola</i></td>
+          <td><span class="pill vu">VU</span></td>
+          <td>Captura incidental en pesca de deriva; plásticos ingeridos</td>
+        </tr>
+        <tr>
+          <td>Tiburón ballena</td>
+          <td><i>Rhincodon typus</i></td>
+          <td><span class="pill en">EN</span></td>
+          <td>Pesca dirigida e incidental; colisiones con barcos</td>
+        </tr>
+        <tr>
+          <td>Salmón del Atlántico</td>
+          <td><i>Salmo salar</i></td>
+          <td><span class="pill nt">NT</span></td>
+          <td>Pérdida de ríos de desove, piscifactorías y contaminación</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="num">04</span><h2>Lo que sí funciona</h2></div>
+  <div class="hope">
+    <h3>No es una historia cerrada</h3>
+    <p>Varias pesquerías han demostrado que la tendencia se puede invertir cuando se aplican cuotas con base científica, áreas marinas protegidas y control real del esfuerzo pesquero. Los casos documentados muestran poblaciones recuperándose en años, no en siglos.</p>
+    <ul>
+      <li><b>Cuotas con base científica.</b> Cuando los límites de captura respetan las recomendaciones científicas, los stocks se recuperan: el atún rojo del Atlántico pasó de peligro crítico a preocupación menor.</li>
+      <li><b>Áreas marinas protegidas.</b> Reservas bien vigiladas y sin extracción aumentan la biomasa de peces dentro y fuera de sus fronteras: los adultos migran y repueblan las zonas de pesca.</li>
+      <li><b>Gestión del esfuerzo, no solo de la cuota.</b> Controlar cuántos barcos, qué artes y cuándo faenan importa tanto como el total capturado.</li>
+      <li><b>Consumo informado.</b> Elegir especies con poblaciones sanas y certificación creíble manda una señal de mercado que llega hasta el barco.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="pagenav">
+  <a href="anatomia.html">← Anterior: Anatomía<small>La máquina perfecta, pieza por pieza</small></a>
+  <a href="index.html" style="text-align:right">Volver al inicio<small>Los 10 temas del mundo submarino →</small></a>
+</div>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <h3>Fuentes</h3>
+    <ol class="refs">
+      <li>FAO — <a href="https://www.fao.org/publications/home/fao-flagship-publications/the-state-of-world-fisheries-and-aquaculture">The State of World Fisheries and Aquaculture (SOFIA) 2024</a></li>
+      <li>FAO — <a href="https://www.fao.org/newsroom/detail/fao-report-global-fisheries-and-aquaculture-production-reaches-a-new-record-high/en">La producción pesquera y acuícola alcanza un nuevo récord</a></li>
+      <li>MSC — <a href="https://www.msc.org/what-we-are-doing/science-and-research/six-takeaways-state-of-worlds-fisheries">Seis conclusiones sobre el estado de las pesquerías</a></li>
+      <li>Mongabay — <a href="https://news.mongabay.com/2024/07/for-the-first-time-ever-were-farming-more-seafood-than-were-catching-fao">Por primera vez cultivamos más marisco del que capturamos</a></li>
+      <li>UICN — <a href="https://www.iucnredlist.org/">Lista Roja de Especies Amenazadas</a></li>
+    </ol>
+    <div class="foot-bottom">
+      <span>Pezquería · Divulgación del mundo submarino</span>
+      <span>Contenido educativo — datos verificados contra fuentes científicas</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

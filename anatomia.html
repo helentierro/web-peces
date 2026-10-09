@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anatomía de un pez | Pezquería</title>
+<style>
+  :root {
+    --ink: #12263a; --ink-soft: #3c5a6e; --paper: #fdfcf9; --card: #ffffff;
+    --line: #d9e2ea; --accent: #1b6ca8; --accent-warm: #c25e00; --accent-deep: #0b3c5d;
+    --radius: 14px; --maxw: 1120px;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+    --sans: "Avenir Next", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--sans); color: var(--ink); background: var(--paper); line-height: 1.62; font-size: 17px; }
+  a { color: var(--accent); }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  nav.site { position: sticky; top: 0; z-index: 50; background: rgba(253,252,249,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  nav.site .wrap { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+  .brand { font-family: var(--serif); font-weight: 700; font-size: 1.25rem; color: var(--accent-deep); text-decoration: none; }
+  .brand span { color: var(--accent-warm); }
+  .nav-links { display: flex; gap: 4px; flex-wrap: wrap; }
+  .nav-links a { text-decoration: none; color: var(--ink-soft); font-size: .92rem; font-weight: 600; padding: 8px 12px; border-radius: 999px; transition: background .2s, color .2s; }
+  .nav-links a:hover { background: #eaf3f9; color: var(--accent-deep); }
+  .nav-links a.active { background: var(--accent-deep); color: #fff; }
+
+  header.masthead {
+    background:
+      radial-gradient(1100px 420px at 20% -30%, #2a7fb8 0%, rgba(42,127,184,0) 60%),
+      linear-gradient(210deg, #0b3c5d 0%, #14618f 55%, #1b6ca8 100%);
+    color: #fff; padding: 72px 0 60px; position: relative; overflow: hidden;
+  }
+  .kicker { display: inline-block; font-size: .74rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #ffd9a8; border: 1px solid rgba(255,217,168,.45); padding: 5px 12px; border-radius: 999px; margin-bottom: 20px; }
+  .masthead h1 { font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.06; margin: 0 0 16px; max-width: 22ch; letter-spacing: -.5px; }
+  .standfirst { font-size: 1.14rem; max-width: 62ch; color: #d7e8f4; margin: 0; }
+  .meta-row { margin-top: 30px; display: flex; gap: 28px; flex-wrap: wrap; font-size: .86rem; color: #a9c8dd; }
+  .meta-row b { display: block; color: #fff; font-size: 1.05rem; font-family: var(--serif); }
+
+  section { padding: 56px 0 8px; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid var(--ink); padding-bottom: 10px; margin-bottom: 28px; }
+  .sec-head h2 { font-family: var(--serif); font-size: 1.9rem; margin: 0; letter-spacing: -.3px; }
+  .sec-head .num { font-family: var(--serif); font-size: 1.1rem; color: var(--accent-warm); font-weight: 700; }
+  .lead { font-size: 1.08rem; max-width: 70ch; }
+
+  /* ---------- Interactive diagram ---------- */
+  .diagram { display: grid; grid-template-columns: 1.25fr 1fr; gap: 26px; margin-top: 26px; align-items: start; }
+  .diagram-figure { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 16px 10px; }
+  .diagram-figure svg { width: 100%; height: auto; display: block; }
+  .part { cursor: pointer; transition: opacity .18s ease, filter .18s ease; }
+  .part:hover { filter: brightness(1.12); }
+  .part.dim { opacity: .28; }
+  .part.active { filter: brightness(1.18) drop-shadow(0 0 4px rgba(194,94,0,.55)); }
+  .part-label { font-family: var(--serif); font-size: 15px; fill: #0b3c5d; font-weight: 700; pointer-events: none; }
+  .part-sub { font-family: var(--sans); font-size: 11.5px; fill: #6b8494; pointer-events: none; }
+  .leader { stroke: #8aa5b5; stroke-width: 1.2; stroke-dasharray: 3 3; fill: none; pointer-events: none; }
+  .hint { text-align: center; font-size: .84rem; color: var(--ink-soft); padding: 6px 0 12px; }
+
+  .detail-panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; min-height: 320px; position: sticky; top: 84px; }
+  .detail-panel .num { font-family: var(--serif); font-size: .9rem; color: var(--accent-warm); font-weight: 700; letter-spacing: .1em; }
+  .detail-panel h3 { font-family: var(--serif); font-size: 1.55rem; margin: 6px 0 2px; color: var(--accent-deep); }
+  .detail-panel .sci { font-style: italic; color: var(--ink-soft); font-size: .92rem; margin: 0 0 16px; }
+  .detail-panel p { font-size: .98rem; color: var(--ink-soft); margin: 0 0 14px; }
+  .detail-panel .fact { background: #f2f7fa; border-left: 3px solid var(--accent); padding: 12px 16px; border-radius: 0 10px 10px 0; font-size: .92rem; }
+  .detail-panel .fact b { color: var(--accent-deep); }
+
+  /* ---------- Body shape cards ---------- */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 22px; margin-top: 28px; }
+  .shape-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; transition: box-shadow .25s ease, transform .25s ease; }
+  .shape-card:hover { box-shadow: 0 14px 32px rgba(18,38,58,.10); transform: translateY(-3px); }
+  .shape-card svg { display: block; margin: 0 auto 14px; }
+  .shape-card h3 { font-family: var(--serif); font-size: 1.2rem; margin: 0 0 4px; color: var(--accent-deep); }
+  .shape-card .sci { font-style: italic; color: var(--ink-soft); font-size: .86rem; margin: 0 0 12px; }
+  .shape-card p { font-size: .94rem; color: var(--ink-soft); margin: 0 0 12px; }
+  .shape-card .ex { font-size: .84rem; color: var(--ink); border-top: 1px dashed var(--line); padding-top: 10px; }
+  .shape-card .ex b { color: var(--accent); }
+
+  /* ---------- Scales table ---------- */
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); margin-top: 26px; }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: .95rem; }
+  caption { text-align: left; padding: 16px 18px 12px; font-size: .84rem; color: var(--ink-soft); font-style: italic; }
+  th, td { padding: 13px 16px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { background: var(--accent-deep); color: #fff; font-size: .76rem; letter-spacing: .09em; text-transform: uppercase; font-weight: 700; border-bottom: none; }
+  tbody tr:nth-child(even) { background: #f6f9fb; }
+  tbody tr:hover { background: #eaf3f9; }
+  td.spec { font-family: var(--serif); font-weight: 700; color: var(--accent); white-space: nowrap; }
+
+  footer.site { margin-top: 72px; background: #0b3c5d; color: #cfe2ee; padding: 44px 0 30px; }
+  footer.site h3 { color: #fff; font-family: var(--serif); font-size: 1.1rem; margin: 0 0 14px; }
+  .refs { columns: 2 300px; column-gap: 36px; font-size: .85rem; line-height: 1.7; }
+  .refs li { margin-bottom: 8px; break-inside: avoid; }
+  .refs a { color: #8ec6e8; }
+  .foot-bottom { border-top: 1px solid rgba(255,255,255,.15); margin-top: 28px; padding-top: 18px; font-size: .85rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+
+  .pagenav { display: flex; justify-content: space-between; gap: 16px; margin: 56px 0 0; flex-wrap: wrap; }
+  .pagenav a { text-decoration: none; color: var(--accent-deep); font-weight: 600; font-size: .95rem; border: 1px solid var(--line); background: var(--card); padding: 14px 20px; border-radius: 10px; flex: 1 1 240px; transition: border-color .2s, background .2s; }
+  .pagenav a:hover { border-color: var(--accent); background: #f2f7fa; }
+  .pagenav a small { display: block; color: var(--ink-soft); font-weight: 400; font-size: .82rem; }
+
+  @media (max-width: 900px) {
+    .diagram { grid-template-columns: 1fr; }
+    .detail-panel { position: static; }
+  }
+  @media (max-width: 760px) {
+    body { font-size: 16px; }
+    nav.site .wrap { height: auto; flex-direction: column; gap: 8px; padding: 10px 16px; }
+    header.masthead { padding: 48px 0 40px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<nav class="site">
+  <div class="wrap">
+    <a class="brand" href="index.html">🐠 Pezquer<span>ía</span></a>
+    <div class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="superpoderes.html">Superpoderes</a>
+      <a href="anatomia.html" class="active" aria-current="page">Anatomía</a>
+      <a href="futuro.html">El Futuro</a>
+    </div>
+  </div>
+</nav>
+
+<header class="masthead">
+  <div class="wrap">
+    <span class="kicker">Expediente 02 · Anatomía funcional</span>
+    <h1>Anatomía de un pez: la máquina perfecta</h1>
+    <p class="standfirst">Branquias que extraen oxígeno del agua, un flotador interno de precisión milimétrica y una línea lateral que siente las vibraciones del fondo. Un pez es un vehículo resuelto hasta el último detalle.</p>
+    <div class="meta-row">
+      <div><b>80 %</b> del oxígeno disuelto que puede capturar una branquia</div>
+      <div><b>5–13 %</b> del volumen corporal en la vejiga natatoria</div>
+      <div><b>~5 m</b> alcance de la línea lateral en un tiburón</div>
+      <div><b>4</b> formas de cuerpo según su forma de vida</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section>
+  <div class="sec-head"><span class="num">01</span><h2>Pieza por pieza</h2></div>
+  <p class="lead">Toca cualquier parte del pez —o usa las pestañas— para ver qué hace, cómo funciona y qué cifra la define. El diagrama es el mismo plano que usaría un biólogo para diseccionarlo: externo primero, interno después.</p>
+
+  <div class="diagram">
+    <figure class="diagram-figure" style="margin:0">
+      <svg viewBox="0 0 640 430" role="img" aria-label="Diagrama anatómico de un pez óseo con partes resaltables">
+        <!-- Water background hint -->
+        <rect x="0" y="0" width="640" height="430" fill="#eef6fa" rx="10"/>
+        <g opacity=".5">
+          <circle cx="60" cy="60" r="3" fill="#b9d6e6"/><circle cx="110" cy="40" r="2" fill="#b9d6e6"/>
+          <circle cx="90" cy="110" r="2.5" fill="#b9d6e6"/><circle cx="580" cy="80" r="2" fill="#b9d6e6"/>
+          <circle cx="620" cy="130" r="3" fill="#b9d6e6"/><circle cx="540" cy="40" r="2" fill="#b9d6e6"/>
+        </g>
+
+        <!-- FISH BODY -->
+        <!-- Tail fin -->
+        <path class="part" data-part="caudal" d="M470 205 L560 150 L545 205 L560 260 Z" fill="#46b1de" stroke="#1b6ca8" stroke-width="2" stroke-linejoin="round"/>
+        <!-- Body -->
+        <path class="part" data-part="cuerpo" d="M150 205 C150 130 260 105 370 105 C470 105 500 165 505 205 C500 245 470 305 370 305 C260 305 150 280 150 205 Z" fill="#7fd0ec" stroke="#1b6ca8" stroke-width="2"/>
+        <!-- Dorsal fin -->
+        <path class="part" data-part="dorsal" d="M240 108 L255 55 L290 62 L320 55 L345 108 Z" fill="#46b1de" stroke="#1b6ca8" stroke-width="2" stroke-linejoin="round"/>
+        <!-- Pelvic fin -->
+        <path class="part" data-part="pelvicas" d="M300 295 L290 350 L325 322 Z" fill="#46b1de" stroke="#1b6ca8" stroke-width="2" stroke-linejoin="round"/>
+        <!-- Anal fin -->
+        <path class="part" data-part="anal" d="M380 300 L370 355 L420 312 Z" fill="#46b1de" stroke="#1b6ca8" stroke-width="2" stroke-linejoin="round"/>
+        <!-- Pectoral fin -->
+        <path class="part" data-part="pectorales" d="M255 235 L215 290 L285 265 Z" fill="#46b1de" stroke="#1b6ca8" stroke-width="2" stroke-linejoin="round"/>
+        <!-- Head -->
+        <path class="part" data-part="cabeza" d="M150 205 C150 130 260 105 370 105 C385 108 385 302 370 305 C260 305 150 280 150 205 Z" fill="#a8e0f5" stroke="#1b6ca8" stroke-width="2" opacity=".9"/>
+        <!-- Eye -->
+        <circle class="part" data-part="ojo" cx="185" cy="185" r="12" fill="#fff" stroke="#1b6ca8" stroke-width="2"/>
+        <circle cx="185" cy="185" r="5" fill="#0b3c5d"/>
+        <!-- Mouth -->
+        <ellipse class="part" data-part="boca" cx="158" cy="222" rx="10" ry="6" fill="#e8f6fc" stroke="#1b6ca8" stroke-width="1.5"/>
+        <!-- Operculum (gill cover) -->
+        <path class="part" data-part="opercular" d="M205 140 C245 155 250 255 205 272 C190 255 190 155 205 140 Z" fill="none" stroke="#c25e00" stroke-width="2.5" stroke-dasharray="6 4"/>
+        <!-- Gills -->
+        <g class="part" data-part="branquias">
+          <path d="M232 175 q10 12 0 24 M248 172 q12 14 0 30 M264 175 q10 12 0 24" fill="none" stroke="#c25e00" stroke-width="2.2" stroke-linecap="round"/>
+        </g>
+        <!-- Swim bladder -->
+        <ellipse class="part" data-part="natatoria" cx="360" cy="185" rx="78" ry="26" fill="#dff2fa" stroke="#1b6ca8" stroke-width="2" opacity=".92"/>
+        <!-- Lateral line -->
+        <path class="part" data-part="linea" d="M240 232 C300 248 380 250 440 238" fill="none" stroke="#0b3c5d" stroke-width="3" stroke-linecap="round"/>
+        <!-- Heart/internal -->
+        <circle class="part" data-part="corazon" cx="300" cy="225" r="8" fill="#e0607a" stroke="#a83a52" stroke-width="1.5"/>
+
+        <!-- Labels with leader lines -->
+        <g class="part" data-part="dorsal">
+          <line class="leader" x1="290" y1="58" x2="290" y2="28"/>
+          <text class="part-label" x="290" y="22" text-anchor="middle">Aleta dorsal</text>
+        </g>
+        <g class="part" data-part="cabeza">
+          <line class="leader" x1="185" y1="173" x2="185" y2="28"/>
+          <text class="part-label" x="185" y="22" text-anchor="middle">Ojo</text>
+        </g>
+        <g class="part" data-part="branquias">
+          <line class="leader" x1="248" y1="172" x2="150" y2="140"/>
+          <text class="part-label" x="150" y="132" text-anchor="middle">Branquias</text>
+        </g>
+        <g class="part" data-part="boca">
+          <line class="leader" x1="158" y1="228" x2="60" y2="255"/>
+          <text class="part-label" x="60" y="262" text-anchor="middle">Boca</text>
+        </g>
+        <g class="part" data-part="pectorales">
+          <line class="leader" x1="232" y1="282" x2="150" y2="345"/>
+          <text class="part-label" x="150" y="352" text-anchor="middle">Aleta pectoral</text>
+        </g>
+        <g class="part" data-part="natatoria">
+          <line class="leader" x1="430" y1="180" x2="540" y2="140"/>
+          <text class="part-label" x="540" y="132" text-anchor="middle">Vejiga natatoria</text>
+        </g>
+        <g class="part" data-part="linea">
+          <line class="leader" x1="440" y1="240" x2="540" y2="270"/>
+          <text class="part-label" x="540" y="277" text-anchor="middle">Línea lateral</text>
+        </g>
+        <g class="part" data-part="pelvicas">
+          <line class="leader" x1="305" y1="340" x2="330" y2="390"/>
+          <text class="part-label" x="330" y="397" text-anchor="middle">Aleta pélvica</text>
+        </g>
+        <g class="part" data-part="anal">
+          <line class="leader" x1="395" y1="340" x2="430" y2="390"/>
+          <text class="part-label" x="430" y="397" text-anchor="middle">Aleta anal</text>
+        </g>
+        <g class="part" data-part="caudal">
+          <line class="leader" x1="525" y1="205" x2="580" y2="205"/>
+          <text class="part-label" x="580" y="209" text-anchor="middle">Aleta caudal</text>
+        </g>
+        <g class="part" data-part="corazon">
+          <line class="leader" x1="300" y1="233" x2="380" y2="330"/>
+          <text class="part-label" x="380" y="337" text-anchor="middle">Corazón</text>
+        </g>
+      </svg>
+      <p class="hint">Pulsa o pasa el ratón sobre una parte · también puedes usar las teclas ← →</p>
+    </figure>
+
+    <aside class="detail-panel" id="panel" aria-live="polite">
+      <span class="num" id="p-num">01</span>
+      <h3 id="p-title">Línea lateral</h3>
+      <p class="sci" id="p-sci">Systema laterale</p>
+      <p id="p-desc">Una fila de poros microscópicos que recorre los flancos del pez, con células sensoriales (neuromastos) bajo la piel. Detectan vibraciones, cambios de presión y corrientes de agua: es el «oído a distancia» que percibe a un depredador que se acerca, la presa que se mueve entre las rocas o el eco de la propia natación contra un obstáculo.</p>
+      <div class="fact" id="p-fact"><b>Dato:</b> en un tiburón blanco la línea lateral puede percibir movimientos del agua a varios metros de distancia, mucho más allá de lo que alcanza su vista.</div>
+    </aside>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="num">02</span><h2>Formas de cuerpo, formas de vida</h2></div>
+  <p class="lead">El cuerpo de un pez es una frase que dice dónde vive y cómo caza. Cuatro planos básicos, cuatro estrategias distintas.</p>
+
+  <div class="grid">
+    <article class="shape-card">
+      <svg width="150" height="70" viewBox="0 0 150 70" aria-hidden="true">
+        <path d="M20 35 C40 12 95 12 125 35 C95 58 40 58 20 35 Z" fill="#7fd0ec" stroke="#1b6ca8" stroke-width="2"/>
+        <path d="M125 35 L142 20 L138 35 L142 50 Z" fill="#46b1de" stroke="#1b6ca8" stroke-width="2"/>
+        <path d="M45 16 L55 4 L72 16 Z" fill="#46b1de" stroke="#1b6ca8" stroke-width="2"/>
+      </svg>
+      <h3>Fusiforme</h3>
+      <p class="sci">«En forma de huso»</p>
+      <p>El cuerpo más aerodinámico del reino animal: alargado, redondo en sección y puntiagudo en ambos extremos. Diseñado para nadar largas distancias con el mínimo gasto de energía y soportar velocidades altas en aguas abiertas.</p>
+      <div class="ex"><b>Ejemplos:</b> atún, pez vela, tiburón blanco</div>
+    </article>
+
+    <article class="shape-card">
+      <svg width="150" height="70" viewBox="0 0 150 70" aria-hidden="true">
+        <ellipse cx="75" cy="35" rx="58" ry="17" fill="#7fd0ec" stroke="#1b6ca8" stroke-width="2"/>
+        <path d="M133 35 L146 26 L143 35 L146 44 Z" fill="#46b1de" stroke="#1b6ca8" stroke-width="2"/>
+        <path d="M55 20 L63 8 L78 20 Z" fill="#46b1de" stroke="#1b6ca8" stroke-width="2"/>
+      </svg>
+      <h3>Comprimido</h3>
+      <p class="sci">«Como una moneda»</p>
+      <p>Alto y estrecho de perfil, como una lámina vertical. Favorece la maniobrabilidad extrema en espacios reducidos y el camuflaje entre corales y algas: puede esconderse detrás de una roca y desaparecer de vista con un simple giro.</p>
+      <div class="ex"><b>Ejemplos:</b> pez ángel, pez payaso, mariposa de arrecife</div>
+    </article>
+
+    <article class="shape-card">
+      <svg width="150" height="70" viewBox="0 0 150 70" aria-hidden="true">
+        <path d="M20 35 C40 22 100 22 128 35 C100 48 40 48 20 35 Z" fill="#7fd0ec" stroke="#1b6ca8" stroke-width="2"/>
+        <path d="M128 35 L142 27 L139 35 L142 43 Z" fill="#46b1de" stroke="#1b6ca8" stroke-width="2"/>
+      </svg>
+      <h3>Deprimido</h3>
+      <p class="sci">«Aplanado por arriba»</p>
+      <p>Ancho y bajo, pegado al fondo. Es la forma de quien vive sobre la arena o entre las rocas: la lengua de un lenguado o la cabeza de una raya. Algunos están tan aplanados que nadan de costado con los dos ojos en la misma cara.</p>
+      <div class="ex"><b>Ejemplos:</b> raya, lenguado, pez piedra</div>
+    </article>
+
+    <article class="shape-card">
+      <svg width="150" height="70" viewBox="0 0 150 70" aria-hidden="true">
+        <path d="M22 38 C35 12 75 8 110 30 C128 40 130 55 105 62 C70 70 30 62 22 38 Z" fill="#7fd0ec" stroke="#1b6ca8" stroke-width="2"/>
+        <path d="M125 42 L140 36 L137 46 Z" fill="#46b1de" stroke="#1b6ca8" stroke-width="2"/>
+        <circle cx="45" cy="30" r="3" fill="#0b3c5d"/>
+      </svg>
+      <h3>Anguiliforme</h3>
+      <p class="sci">«Como una culebra»</p>
+      <p>Largo y serpentino, con aletas reducidas o ausentes. Ondula todo el cuerpo para deslizarse por grietas, tubos de coral y sedimentos donde un cuerpo compacto no entraría. Es la forma del especialista en escondites.</p>
+      <div class="ex"><b>Ejemplos:</b> anguila eléctrica, morena, pez cuchillo</div>
+    </article>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="num">03</span><h2>Sistemas en cifras</h2></div>
+  <p class="lead">Los números que hacen posible la vida bajo el agua, comparados con sus equivalentes —o ausencia de ellos— en el mundo del aire.</p>
+
+  <div class="table-scroll">
+    <table>
+      <caption>Valores de referencia; varían según especie, tamaño y temperatura del agua.</caption>
+      <thead>
+        <tr><th scope="col">Sistema</th><th scope="col">Órgano</th><th scope="col">Rendimiento</th><th scope="col">Por qué importa</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Respiración</td>
+          <td>Branquias (arcos y filamentos)</td>
+          <td class="spec">hasta ~80 % del O₂ disuelto</td>
+          <td>Extraen oxígeno de un agua que contiene unas 30 veces menos que el aire equivalente</td>
+        </tr>
+        <tr>
+          <td>Flotación</td>
+          <td>Vejiga natatoria</td>
+          <td class="spec">5–13 % del volumen</td>
+          <td>Permite al pez mantenerse a una profundidad exacta sin gastar energía nadando</td>
+        </tr>
+        <tr>
+          <td>Percepción</td>
+          <td>Línea lateral</td>
+          <td class="spec">vibraciones y presión</td>
+          <td>«Escucha» el movimiento del agua: presas, depredadores y corrientes a distancia</td>
+        </tr>
+        <tr>
+          <td>Propulsión</td>
+          <td>Aletas pares e impares</td>
+          <td class="spec">6 aletas típicas</td>
+          <td>Cada aleta tiene un rol: estabilizar, frenar, girar o impulsar</td>
+        </tr>
+        <tr>
+          <td>Protección</td>
+          <td>Escamas</td>
+          <td class="spec">4 tipos principales</td>
+          <td>De la placa rígida del esturión a la escama flexible del salmón</td>
+        </tr>
+        <tr>
+          <td>Osmorregulación</td>
+          <td>Riñón y branquias</td>
+          <td class="spec">bombeo de iones</td>
+          <td>En el mar el pez pierde agua y bebe; en el río la orina diluida compensa el exceso</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="pagenav">
+  <a href="superpoderes.html">← Anterior: Superpoderes<small>Veneno, electricidad y sangre anticongelante</small></a>
+  <a href="futuro.html" style="text-align:right">Siguiente: El Futuro<small>Sobrepesca, acidificación y supervivencia →</small></a>
+</div>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <h3>Fuentes</h3>
+    <ol class="refs">
+      <li>Wikipedia — <a href="https://es.wikipedia.org/wiki/Anatom%C3%ADa_de_los_peces">Anatomía de los peces</a></li>
+      <li>Wikipedia — <a href="https://es.wikipedia.org/wiki/L%C3%ADnea_lateral">Línea lateral</a></li>
+      <li>Wikipedia — <a href="https://es.wikipedia.org/wiki/Vejiga_natatoria">Vejiga natatoria</a></li>
+      <li>National Geographic — <a href="https://www.nationalgeographic.es/animales/pez">Fichas de peces</a></li>
+      <li>Museo Nacional de Historia Natural — <a href="https://www.mnhn.gob.cl/noticias/peces-excepcionales-ii-los-peces-electricos">Peces excepcionales</a></li>
+    </ol>
+    <div class="foot-bottom">
+      <span>Pezquería · Divulgación del mundo submarino</span>
+      <span>Contenido educativo — datos verificados contra fuentes científicas</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var PARTS = {
+    "linea": {
+      title: "Línea lateral", sci: "Systema laterale", num: "01",
+      desc: "Una fila de poros microscópicos que recorre los flancos del pez, con células sensoriales (neuromastos) bajo la piel. Detectan vibraciones, cambios de presión y corrientes de agua: es el «oído a distancia» que percibe a un depredador que se acerca, la presa que se mueve entre las rocas o el eco de la propia natación contra un obstáculo.",
+      fact: "En un tiburón blanco la línea lateral puede percibir movimientos del agua a varios metros de distancia, mucho más allá de lo que alcanza su vista."
+    },
+    "branquias": {
+      title: "Branquias", sci: "Branchiae", num: "02",
+      desc: "Cuatro pares de arcos branquiales con filamentos finísimos y enorme superficie. El agua entra por la boca, pasa entre los filamentos y sale por el opérculo; la sangre circula en sentido contrario al agua, un intercambio a contracorriente que exprime hasta el último gramo de oxígeno disponible.",
+      fact: "Una branquia bien irrigada puede capturar cerca del 80 % del oxígeno disuelto en el agua que atraviesa; un pulmón humano extrae apenas un 25 % del aire que respira."
+    },
+    "natatoria": {
+      title: "Vejiga natatoria", sci: "Vesica natatoria", num: "03",
+      desc: "Un saco lleno de gas que el pez llena o vacía para ajustar su flotabilidad sin esfuerzo. Al inflarla sube; al comprimirla baja. Funciona como el lastre de un submarino y le permite quedarse quieto a una profundidad exacta durante horas, sin mover una aleta.",
+      fact: "Ocupa entre el 5 % y el 13 % del volumen del cuerpo según la especie. Los tiburones no la tienen: por eso deben nadar sin parar para no hundirse."
+    },
+    "ojo": {
+      title: "Ojo", sci: "Oculus", num: "04",
+      desc: "Sin párpados, con una cornea curva y un cristalino esférico que enfoca moviéndolo hacia dentro o hacia fuera, en lugar de cambiar de forma. Diseñado para ver con nitidez bajo el agua, donde la luz viaja distinta que en el aire.",
+      fact: "Muchos peces de arrecife llevan filtros de aceite de colores dentro de sus propios ojos: les permiten ver longitudes de onda, incluida la ultravioleta, que quedan ocultas para otras especies."
+    },
+    "boca": {
+      title: "Boca", sci: "Os / rictus", num: "05",
+      desc: "Su posición y tamaño delatan la dieta antes de ver al pez comer. Boca terminal para atrapar al paso, boca hacia abajo para ramonear el fondo, boca tubular para chupar presas escondidas en grietas, o una boca gigante que se traga presas mayores que ella.",
+      fact: "El rape abisal abre una boca capaz de engullir presas de su propio tamaño, atraídas por un señuelo que produce su propia luz."
+    },
+    "dorsal": {
+      title: "Aleta dorsal", sci: "Pinna dorsalis", num: "06",
+      desc: "Sobre el dorso, actúa como la quilla de un barco: evita que el pez ruede sobre sí mismo mientras nada. En el pez vela se alarga como una vela enorme; en el león marino se llena de espinas venenosas.",
+      fact: "El pez vela puede plegar su aleta dorsal en una hendidura del lomo a gran velocidad, como un alerón retráctil."
+    },
+    "pectorales": {
+      title: "Aletas pectorales", sci: "Pinnae pectorales", num: "07",
+      desc: "El par situado a los lados, justo detrás de las branquias: son los «remos» que maniobran. Con ellas el pez frena, gira, se estabiliza e incluso se impulsa hacia atrás. Están tan cerca de la cabeza que algunos peces las usan para «caminar» por el fondo.",
+      fact: "El pez volador tiene aletas pectorales enormes que le sirven de alas: planea hasta 200 metros por encima de la superficie."
+    },
+    "pelvicas": {
+      title: "Aletas pélvicas", sci: "Pinnae pelvicus", num: "08",
+      desc: "El par ventral, bajo el vientre. Su posición varía con el estilo de vida: muy adelante en peces de fondo, donde ayudan a sostenerse sobre la arena. Trabajan con las pectorales como timones de precisión.",
+      fact: "En algunas especies, como el pez sapo, las pélvicas se han convertido en apéndices rígidos con los que literalmente camina sobre el fondo marino."
+    },
+    "anal": {
+      title: "Aleta anal", sci: "Pinna analis", num: "09",
+      desc: "Bajo el vientre, cerca de la cola: es el estabilizador vertical trasero. Impide que el pez cabecee de morro hacia arriba y abajo mientras avanza, y aporta su empuje en arranques y frenadas cortas.",
+      fact: "En el pez globo y sus parientes la aleta anal puede portar espinas venenosas, igual que la dorsal: nada en este pez es inofensivo."
+    },
+    "caudal": {
+      title: "Aleta caudal", sci: "Pinna caudalis", num: "10",
+      desc: "La cola: motor principal del pez. Su forma dice cómo nada. Caudal ahorquillada para el crucero de alta velocidad, redondeada para la aceleración corta, truncada para la vida entre rocas.",
+      fact: "Un atún mueve la cola decenas de miles de veces al día; sus músculos rojos, ricos en mioglobina, mantienen esa actividad sin fatigarse."
+    },
+    "cuerpo": {
+      title: "Cuerpo", sci: "Truncus", num: "11",
+      desc: "El tronco aloja los músculos de natación en segmentos repetidos (miotomos) y protege los órganos vitales. Su forma general —fusiforme, comprimida, deprimida o anguiliforme— es la firma del hábitat del pez.",
+      fact: "La piel segrega un mucus que reduce la fricción con el agua y protege contra infecciones: un traje de baño biológico."
+    },
+    "cabeza": {
+      title: "Cabeza", sci: "Caput", num: "12",
+      desc: "El centro sensorial: ojos, narinas, boca y, en los peces óseos, el opérculo que protege las branquias. En el agua, donde el sonido y las vibraciones viajan mejor que la luz, la cabeza concentra todo el equipamiento de percepción.",
+      fact: "El pez eléctrico concentra sus órganos eléctricos en el tronco y la cola, pero sus órganos de electrorrecepción están todos en la cabeza."
+    },
+    "opercular": {
+      title: "Opérculo", sci: "Operculum", num: "13",
+      desc: "La tapa ósea que cierra y abre la cámara branquial. Al abrirla expulsa el agua ya usada y crea la succión que hace entrar agua nueva: una bomba que funciona incluso cuando el pez está parado en el fondo.",
+      fact: "Al observar un pez quieto, el latido rítmico del opérculo es su respiración: cada apertura es una bocanada completa de agua."
+    },
+    "corazon": {
+      title: "Corazón", sci: "Cor", num: "14",
+      desc: "Dos cámaras —una aurícula y un ventrículo— que impulsan la sangre primero a las branquias, donde se oxigena, y después al resto del cuerpo. Un circuito en serie, más simple que el nuestro, pero perfectamente ajustado a la vida acuática.",
+      fact: "La anguila eléctrica tiene su corazón protegido en la cabeza, lejos de sus propios órganos eléctricos, para que una descarga propia no lo detenga."
+    }
+  };
+
+  var panel = document.getElementById("panel");
+  var els = {
+    num: document.getElementById("p-num"),
+    title: document.getElementById("p-title"),
+    sci: document.getElementById("p-sci"),
+    desc: document.getElementById("p-desc"),
+    fact: document.getElementById("p-fact")
+  };
+  var order = Object.keys(PARTS);
+  var current = "linea";
+
+  function show(key) {
+    var p = PARTS[key];
+    if (!p) return;
+    current = key;
+    els.num.textContent = p.num;
+    els.title.textContent = p.title;
+    els.sci.textContent = p.sci;
+    els.desc.textContent = p.desc;
+    els.fact.innerHTML = "<b>Dato:</b> " + p.fact;
+
+    document.querySelectorAll(".part").forEach(function (el) {
+      el.classList.remove("active");
+      el.classList.add("dim");
+      if (el.getAttribute("data-part") === key) {
+        el.classList.remove("dim");
+        el.classList.add("active");
+      }
+    });
+  }
+
+  function reset() {
+    document.querySelectorAll(".part").forEach(function (el) {
+      el.classList.remove("dim", "active");
+    });
+  }
+
+  document.querySelectorAll(".part").forEach(function (el) {
+    var key = el.getAttribute("data-part");
+    el.addEventListener("mouseenter", function () { show(key); });
+    el.addEventListener("click", function () { show(key); });
+    el.setAttribute("tabindex", "0");
+    el.setAttribute("role", "button");
+    el.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); show(key); }
+    });
+  });
+
+  panel.addEventListener("mouseleave", reset);
+
+  document.addEventListener("keydown", function (e) {
+    if (e.target.closest && e.target.closest("input, textarea")) return;
+    var i = order.indexOf(current);
+    if (e.key === "ArrowRight") { e.preventDefault(); show(order[(i + 1) % order.length]); }
+    if (e.key === "ArrowLeft") { e.preventDefault(); show(order[(i - 1 + order.length) % order.length]); }
+  });
+})();
+</script>
+</body>
+</html>

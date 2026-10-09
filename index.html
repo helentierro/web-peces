@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peces: Los Dueños del Océano</title>
+    <!-- Fuente Redondeada Cute -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Baloo+2:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --azul-profundo: #1E90FF;
+            --azul-turquesa: #00CED1;
+            --azul-cielo: #87CEEB;
+            --arena: #F5DEB3;
+            --blanco-espuma: #F0F8FF;
+            --texto-oscuro: #1B4F72;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, var(--azul-turquesa), var(--azul-profundo));
+            color: var(--texto-oscuro);
+            overflow-x: hidden;
+        }
+
+        header {
+            background: var(--azul-profundo);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            border-bottom: 8px solid var(--azul-cielo);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            font-family: 'Baloo 2', cursive;
+            font-size: 3.5rem;
+            margin: 0;
+            text-shadow: 3px 3px 0px var(--azul-turquesa);
+            letter-spacing: 2px;
+        }
+
+        .intro {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 20px auto;
+            background: rgba(255,255,255,0.8);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border: 4px solid var(--azul-profundo);
+            text-align: center;
+        }
+
+        .contenedor {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .tarjeta {
+            background: var(--blanco-espuma);
+            border-radius: 30px;
+            padding: 25px;
+            text-align: center;
+            border: 6px solid var(--azul-cielo);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-10px) rotate(-2deg);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        }
+
+        .emoji-principal {
+            font-size: 6rem;
+            display: block;
+            margin-bottom: 10px;
+            transition: transform 0.4s;
+        }
+
+        .tarjeta:hover .emoji-principal {
+            transform: scale(1.3) rotate(-20deg);
+        }
+
+        .titulo-tarjeta {
+            font-family: 'Baloo 2', cursive;
+            font-size: 1.8rem;
+            color: var(--azul-profundo);
+            margin-top: 0;
+            border-bottom: 2px dashed var(--azul-turquesa);
+            padding-bottom: 10px;
+        }
+
+        .info {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            text-align: left;
+            background: rgba(30, 144, 255, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        .dato-curioso {
+            background: var(--azul-profundo);
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 10px;
+            box-shadow: 0 4px 0 #12456e;
+        }
+
+        .imagen-estilo {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            display: none; /* Se activa si hay imagen */
+        }
+
+        footer {
+            background: var(--azul-profundo);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.2rem;
+            margin-top: 50px;
+        }
+
+        /* Media Queries para móviles (no se desfasa) */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2rem; }
+            .contenedor { grid-template-columns: 1fr; padding: 20px; }
+            .emoji-principal { font-size: 4.5rem; }
+        }
+
+        /* Animación de aparición */
+        .oculto { opacity: 0; transform: translateY(50px); transition: all 0.8s; }
+        .visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+    <nav style="background: #0b3c5d; padding: 0; box-shadow: 0 4px 10px rgba(0,0,0,.2); position: sticky; top: 0; z-index: 100;">
+        <div style="max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 12px 20px; gap: 10px;">
+            <span style="font-family: 'Baloo 2', cursive; font-size: 1.4rem; color: white; letter-spacing: 1px;">🐠 PEZQUERÍA</span>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <a href="index.html" style="background: #00CED1; color: #0b3c5d; text-decoration: none; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: .95rem; padding: 9px 16px; border-radius: 999px;">Inicio</a>
+                <a href="superpoderes.html" style="background: rgba(255,255,255,.12); color: white; text-decoration: none; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: .95rem; padding: 9px 16px; border-radius: 999px;">⚡ Superpoderes</a>
+                <a href="anatomia.html" style="background: rgba(255,255,255,.12); color: white; text-decoration: none; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: .95rem; padding: 9px 16px; border-radius: 999px;">🔬 Anatomía</a>
+                <a href="futuro.html" style="background: rgba(255,255,255,.12); color: white; text-decoration: none; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: .95rem; padding: 9px 16px; border-radius: 999px;">🌍 El Futuro</a>
+            </div>
+        </div>
+    </nav>
+
+    <header>
+        <h1>🐠 PEZQUERÍA: EL MUNDO SUBMARINO 🐡</h1>
+        <p>Sumérgete en los secretos más alucinantes de los peces.</p>
+    </header>
+
+    <div class="intro">
+        🧜‍♀️ ¡Bienvenido, buceador! Pasa el ratón por encima de las burbujas para verlas explotar de información. Estos son los 10 temas más locos de las profundidades.
+    </div>
+
+    <main class="contenedor">
+
+        <!-- TEMA 1 -->
+        <article class="tarjeta oculto">
+            <span class="emoji-principal">⚡🏆</span>
+            <h2 class="titulo-tarjeta">1. El Rey de la Velocidad</h2>
+            <div class="info">
+                El <b>Pez Vela</b> es el pez más rápido del océano, alcanzando los <b>110 km/h</b>. ¡Es más rápido que un coche en una autopista! Su aleta dorsal como una vela le ayuda a cortar el agua y girar rapidísimo.
+            </div>
+            <span class="dato-curioso">💡 ¡Puede cambiar de color de azul a plateado cuando se excita o asusta!</span>
+            <img src="img/pez_vela.jpg" class="imagen-estilo" onerror="this.style.display='none'">
+        </article>
+
+        <!-- TEMA 2 -->
+        <article class="tarjeta oculto">
+            <span class="emoji-principal">🎈🐡</span>
+            <h2 class="titulo-tarjeta">2. El Globo Espinoso</h2>
+            <div class="info">
+                El <b>Pez Globo</b> es un maestro del engaño. Cuando se siente amenazado, ¡se traga agua y se infla hasta triplicar su tamaño! Además, su cuerpo esconde una sustancia llamada tetrodotoxina, un veneno mortal hasta 1,200 veces más fuerte que el cianuro.
+            </div>
+            <span class="dato-curioso">💡 ¡En Japón solo chefs con licencia pueden cocinarlo, y si se equivocan, se convierten en su última cena!</span>
+            <img src="img/pez_globo.jpg" class="imagen-estilo" onerror="this.style.display='none'">
+        </article>
+
+        <!-- TEMA 3 -->
+        <article class="tarjeta oculto">
+            <span class="emoji-principal">🔋⚡</span>
+            <h2 class="titulo-tarjeta">3. La Anguila Eléctrica</h2>
+            <div class="info">
+                No es una anguila de verdad, ¡es un pez cuchillo! Puede generar <b>600 voltios</b>, suficiente para tumbar a un caballo. Usa su electricidad como un radar para "ver" en aguas turbias y para electrocutar a sus presas.
+            </div>
+            <span class="dato-curioso">💡 ¡Su corazón y sus órganos vitales están en su cabeza para protegerse de su propia descarga!</span>
+            <img src="img/anguila_electrica.jpg" class="imagen-estilo" onerror="this.style.display='none'">
+        </article>
+
+        <!-- TEMA 4 -->
+        <article class="tarjeta oculto">
+            <span class="emoji-principal">🥊🐠</span>
+            <h2 class="titulo-tarjeta">4. El Constructor de Nidos</h2>
+            <div class="info">
+                El <b>Pez Betta</b> es un artista. El macho construye un "nido de burbujas" en la superficie del agua usando su propia saliva. ¡Es un arquitecto submarino! Y es tan territorial que los machos se pelean hasta la muerte (por eso se les llama "Pez Luchador de Siam").
+            </div>
+            <span class="dato-curioso">💡 ¡Su color brillante no es solo belleza, es una amenaza para los rivales!</span>
+            <img src="img/pez_betta.jpg" class="imagen-estilo" onerror="this.style.display='none'">
+        </article>
+
+        <!-- TEMA 5 -->
+        <article class="tarjeta oculto">
+            <span class="emoji-principal">🏔️💦</span>
+            <h2 class="titulo-tarjeta">5. El Viajero del Agua</h2>
+            <div class="info">
+                El <b>Salmón</b> realiza una de las migraciones más épicas: nace en un río de montaña, nada miles de kilómetros hasta el mar, ¡y luego regresa al mismo río exacto donde nació para poner huevos! Para lograrlo, salta cascadas de hasta 3 metros de altura.
+            </div>
+            <span class="dato-curioso">💡 ¡Usan el campo magnético de la Tierra y su olfato para no perderse ni un metro del camino!</span>
+            <img src="img/salmon.jpg" class="imagen-estilo" onerror="this.style.display='none'">
+        </article>
+
+        <!-- TEMA 6 -->
+        <article class="tarjeta oculto">
+            <span class="emoji-principal">🕯️🌑</span>
+            <h2 class="titulo-tarjeta">6. El Pez con Linterna</h2>
+            <div class="info">
+                En las profundidades más oscuras del océano, donde no llega la luz del sol, viven peces que <b>fabrican su propia luz</b> mediante bioluminiscencia. Usan bacterias o química corporal para brillar, atraer pareja y cazar.
+            </div>
+            <span class="dato-curioso">💡 ¡El rape abisal usa una "caña de pescar" brillante para atraer a sus presas directo a su boca gigante!</span>
+            <img src="img/rape_abisal.jpg" class="imagen-estilo" onerror="this.style.display='none'">
+        </article>
+
+        <!-- TEMA 7 -->
+        <article class="tarjeta oculto">
+            <span class="emoji-principal">✈️🌊</span>
+            <h2 class="titulo-tarjeta">7. El Pez Volador</h2>
+            <div class="info">
+                El <b>Pez Volador</b> tiene aletas pectorales enormes que usa como alas. Puede saltar del agua y planear hasta <b>200 metros</b>, casi como un avión, para escapar de sus depredadores como el atún o los delfines.
+            </div>
+            <span class="dato-curioso">💡 ¡Pueden llegar a volar a la altura de un segundo piso (unos 6 metros)!</span>
+            <img src="img/pez_volador.jpg" class="imagen-estilo" onerror="this.style.display='none'">
+        </article>
+
+        <!-- TEMA 8 -->
+        <article class="tarjeta oculto">
+            <span class="emoji-principal">🦇🐟</span>
+            <h2 class="titulo-tarjeta">8. El Pez con "Patas"</h2>
+            <div class="info">
+                El <b>Pez Murciélago</b> es un maestro de la evolución. Aunque vive en el agua, sus aletas se han convertido en "patas" que le permiten caminar sobre el fondo del océano, ¡como si fuera un pequeño lagarto marino!
+            </div>
+            <span class="dato-curioso">💡 ¡Tiene un señuelo en la cabeza que huele y se mueve para engañar a sus presas!</span>
+            <img src="img/pez_murcielago.jpg" class="imagen-estilo" onerror="this.style.display='none'">
+        </article>
+
+        <!-- TEMA 9 -->
+        <article class="tarjeta oculto">
+            <span class="emoji-principal">🪟👻</span>
+            <h2 class="titulo-tarjeta">9. El Pez de Cristal</h2>
+            <div class="info">
+                El <b>Pez Cuchillo de Cristal</b> es casi invisible. Su cuerpo es totalmente transparente, por lo que se le pueden ver sus órganos internos, ¡hasta su corazón latiendo! Esta es su mejor defensa contra los depredadores.
+            </div>
+            <span class="dato-curioso">💡 ¡Tiene un órgano eléctrico en su cola que le permite comunicarse y navegar sin ser visto!</span>
+            <img src="img/pez_cristal.jpg" class="imagen-estilo" onerror="this.style.display='none'">
+        </article>
+
+        <!-- TEMA 10 -->
+        <article class="tarjeta oculto">
+            <span class="emoji-principal">🎭🐠</span>
+            <h2 class="titulo-tarjeta">10. El Pez Cambia Sexos</h2>
+            <div class="info">
+                Los <b>Pez Payaso</b> (como Nemo) son todos machos al nacer. Si la hembra dominante muere, ¡el macho más grande se transforma en hembra para seguir con la colonia! Es la versión submarina de "Los Juegos del Hambre".
+            </div>
+            <span class="dato-curioso">💡 ¡También lo hacen otros peces como los lábridos o el pez loro!</span>
+            <img src="img/pez_payaso.jpg" class="imagen-estilo" onerror="this.style.display='none'">
+        </article>
+
+    </main>
+
+    <footer>
+        <p>¡Hecho con ❤️ para bucear sin mojarse! | Subido gratis y listo para explorar.</p>
+    </footer>
+
+    <!-- Script para animaciones -->
+    <script>
+        const elementos = document.querySelectorAll('.oculto');
+        const observador = new IntersectionObserver((entradas) => {
+            entradas.forEach(entrada => {
+                if (entrada.isIntersecting) {
+                    entrada.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.2 });
+
+        elementos.forEach(elemento => observador.observe(elemento));
+    </script>
+</body>
+</html>

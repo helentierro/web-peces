@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Superpoderes | Pezquería</title>
+<style>
+  :root {
+    --ink: #12263a;
+    --ink-soft: #3c5a6e;
+    --paper: #fdfcf9;
+    --card: #ffffff;
+    --line: #d9e2ea;
+    --accent: #1b6ca8;
+    --accent-warm: #c25e00;
+    --accent-deep: #0b3c5d;
+    --radius: 14px;
+    --maxw: 1120px;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    --sans: "Avenir Next", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; font-family: var(--sans); color: var(--ink);
+    background: var(--paper); line-height: 1.62; font-size: 17px;
+  }
+  a { color: var(--accent); }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Nav ---------- */
+  nav.site {
+    position: sticky; top: 0; z-index: 50; background: rgba(253,252,249,.92);
+    backdrop-filter: blur(8px); border-bottom: 1px solid var(--line);
+  }
+  nav.site .wrap { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+  .brand { font-family: var(--serif); font-weight: 700; font-size: 1.25rem; color: var(--accent-deep); text-decoration: none; letter-spacing: .2px; }
+  .brand span { color: var(--accent-warm); }
+  .nav-links { display: flex; gap: 4px; flex-wrap: wrap; }
+  .nav-links a {
+    text-decoration: none; color: var(--ink-soft); font-size: .92rem; font-weight: 600;
+    padding: 8px 12px; border-radius: 999px; transition: background .2s, color .2s;
+  }
+  .nav-links a:hover { background: #eaf3f9; color: var(--accent-deep); }
+  .nav-links a.active { background: var(--accent-deep); color: #fff; }
+
+  /* ---------- Masthead ---------- */
+  header.masthead {
+    background:
+      radial-gradient(1100px 420px at 78% -30%, #2a7fb8 0%, rgba(42,127,184,0) 60%),
+      linear-gradient(150deg, #0b3c5d 0%, #14618f 55%, #1b6ca8 100%);
+    color: #fff; padding: 72px 0 60px; position: relative; overflow: hidden;
+  }
+  .kicker {
+    display: inline-block; font-size: .74rem; font-weight: 700; letter-spacing: .16em;
+    text-transform: uppercase; color: #ffd9a8; border: 1px solid rgba(255,217,168,.45);
+    padding: 5px 12px; border-radius: 999px; margin-bottom: 20px;
+  }
+  .masthead h1 {
+    font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.06;
+    margin: 0 0 16px; max-width: 20ch; letter-spacing: -.5px;
+  }
+  .standfirst { font-size: 1.14rem; max-width: 62ch; color: #d7e8f4; margin: 0; }
+  .meta-row { margin-top: 30px; display: flex; gap: 28px; flex-wrap: wrap; font-size: .86rem; color: #a9c8dd; }
+  .meta-row b { display: block; color: #fff; font-size: 1.05rem; font-family: var(--serif); }
+
+  /* ---------- Sections ---------- */
+  section { padding: 56px 0 8px; }
+  .sec-head { display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid var(--ink); padding-bottom: 10px; margin-bottom: 28px; }
+  .sec-head h2 { font-family: var(--serif); font-size: 1.9rem; margin: 0; letter-spacing: -.3px; }
+  .sec-head .num { font-family: var(--serif); font-size: 1.1rem; color: var(--accent-warm); font-weight: 700; }
+  .lead { font-size: 1.08rem; max-width: 70ch; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 22px; }
+  .power {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 24px; display: flex; flex-direction: column; gap: 10px;
+    transition: box-shadow .25s ease, transform .25s ease;
+  }
+  .power:hover { box-shadow: 0 14px 32px rgba(18,38,58,.10); transform: translateY(-3px); }
+  .power h3 { font-family: var(--serif); font-size: 1.28rem; margin: 0; color: var(--accent-deep); }
+  .power .tag {
+    align-self: flex-start; font-size: .68rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+    background: #fdeedd; color: #8a4300; padding: 4px 9px; border-radius: 6px;
+  }
+  .power p { margin: 0; font-size: .97rem; color: var(--ink-soft); }
+  .power .stat { margin-top: auto; padding-top: 12px; border-top: 1px dashed var(--line); font-size: .88rem; }
+  .power .stat b { font-family: var(--serif); font-size: 1.15rem; color: var(--accent); display: block; }
+
+  /* ---------- Table ---------- */
+  .table-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); }
+  table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: .95rem; }
+  caption { text-align: left; padding: 16px 18px 12px; font-size: .84rem; color: var(--ink-soft); font-style: italic; }
+  th, td { padding: 13px 16px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th {
+    background: var(--accent-deep); color: #fff; font-size: .76rem; letter-spacing: .09em;
+    text-transform: uppercase; font-weight: 700; border-bottom: none;
+  }
+  tbody tr:nth-child(even) { background: #f6f9fb; }
+  tbody tr:hover { background: #eaf3f9; }
+  td.spec { font-family: var(--serif); font-weight: 700; color: var(--accent); white-space: nowrap; }
+  td.name { font-weight: 600; }
+  td.name small { display: block; font-weight: 400; font-style: italic; color: var(--ink-soft); font-size: .82rem; }
+
+  /* ---------- Duel (electric) ---------- */
+  .duel { display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: stretch; margin-top: 8px; }
+  .duel .side {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 24px; text-align: center;
+  }
+  .duel .side h3 { font-family: var(--serif); margin: 6px 0 4px; font-size: 1.35rem; color: var(--accent-deep); }
+  .duel .side .sci { font-style: italic; color: var(--ink-soft); font-size: .9rem; margin: 0 0 14px; }
+  .duel .side .big { font-family: var(--serif); font-size: clamp(2.4rem, 6vw, 3.4rem); color: var(--accent); line-height: 1; font-weight: 700; }
+  .duel .side .unit { font-size: .86rem; color: var(--ink-soft); display: block; margin-top: 6px; letter-spacing: .05em; text-transform: uppercase; font-weight: 600; }
+  .duel .side p { font-size: .95rem; color: var(--ink-soft); text-align: left; margin: 16px 0 0; }
+  .duel .vs {
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--serif); font-size: 1.3rem; color: var(--accent-warm); font-weight: 700;
+  }
+  .duel-note { margin-top: 18px; font-size: .93rem; color: var(--ink-soft); background: #f2f7fa; border-left: 3px solid var(--accent); padding: 14px 18px; border-radius: 0 10px 10px 0; }
+  .bar-wrap { margin-top: 14px; }
+  .bar-row { display: grid; grid-template-columns: 150px 1fr 70px; align-items: center; gap: 12px; margin-bottom: 10px; font-size: .9rem; }
+  .bar-track { background: #e8eef3; border-radius: 999px; height: 12px; overflow: hidden; }
+  .bar-fill { height: 100%; background: linear-gradient(90deg, #1b6ca8, #46b1de); border-radius: 999px; }
+  .bar-val { font-family: var(--serif); font-weight: 700; color: var(--accent-deep); text-align: right; }
+
+  /* ---------- FAQ ---------- */
+  details {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 16px 20px; margin-bottom: 12px;
+  }
+  details summary { cursor: pointer; font-family: var(--serif); font-size: 1.1rem; font-weight: 700; color: var(--accent-deep); list-style: none; }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::before { content: "＋ "; color: var(--accent-warm); }
+  details[open] summary::before { content: "－ "; }
+  details p { margin: 12px 0 4px; color: var(--ink-soft); font-size: .98rem; max-width: 72ch; }
+
+  /* ---------- Footer / refs ---------- */
+  footer.site { margin-top: 72px; background: #0b3c5d; color: #cfe2ee; padding: 44px 0 30px; }
+  footer.site h3 { color: #fff; font-family: var(--serif); font-size: 1.1rem; margin: 0 0 14px; }
+  .refs { columns: 2 300px; column-gap: 36px; font-size: .85rem; line-height: 1.7; }
+  .refs li { margin-bottom: 8px; break-inside: avoid; }
+  .refs a { color: #8ec6e8; }
+  .foot-bottom { border-top: 1px solid rgba(255,255,255,.15); margin-top: 28px; padding-top: 18px; font-size: .85rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+
+  .pagenav { display: flex; justify-content: space-between; gap: 16px; margin: 56px 0 0; flex-wrap: wrap; }
+  .pagenav a {
+    text-decoration: none; color: var(--accent-deep); font-weight: 600; font-size: .95rem;
+    border: 1px solid var(--line); background: var(--card); padding: 14px 20px; border-radius: 10px;
+    flex: 1 1 240px; transition: border-color .2s, background .2s;
+  }
+  .pagenav a:hover { border-color: var(--accent); background: #f2f7fa; }
+  .pagenav a small { display: block; color: var(--ink-soft); font-weight: 400; font-size: .82rem; }
+
+  @media (max-width: 760px) {
+    body { font-size: 16px; }
+    nav.site .wrap { height: auto; flex-direction: column; gap: 8px; padding: 10px 16px; }
+    .duel { grid-template-columns: 1fr; }
+    .duel .vs { padding: 4px 0; }
+    .bar-row { grid-template-columns: 110px 1fr 60px; }
+    header.masthead { padding: 48px 0 40px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="site">
+  <div class="wrap">
+    <a class="brand" href="index.html">🐠 Pezquer<span>ía</span></a>
+    <div class="nav-links">
+      <a href="index.html">Inicio</a>
+      <a href="superpoderes.html" class="active" aria-current="page">Superpoderes</a>
+      <a href="anatomia.html">Anatomía</a>
+      <a href="futuro.html">El Futuro</a>
+    </div>
+  </div>
+</nav>
+
+<header class="masthead">
+  <div class="wrap">
+    <span class="kicker">Expediente 01 · Biología comparada</span>
+    <h1>Los superpoderes de los peces</h1>
+    <p class="standfirst">Veneno capaz de matar a un humano, descargas eléctricas de 600 voltios, sangre que no se congela a −1,9 °C y ojos que ven dos mundos a la vez. La evolución resolvió en el agua problemas que en tierra firme siguen sin respuesta.</p>
+    <div class="meta-row">
+      <div><b>6</b> superpoderes catalogados</div>
+      <div><b>−1,9 °C</b> temperatura sin congelar la sangre</div>
+      <div><b>1 200×</b> la toxicidad del cianuro</div>
+      <div><b>860 V</b> la descarga más potente registrada</div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section>
+  <div class="sec-head"><span class="num">01</span><h2>Defensa y ataque</h2></div>
+  <p class="lead">En el océano no existe la tregua: cada adaptación de defensa empuja a otra especie a inventar un ataque mejor. Estos son los mecanismos más extremos documentados.</p>
+
+  <div class="grid" style="margin-top:28px">
+    <article class="power">
+      <span class="tag">Defensa química</span>
+      <h3>Veneno en el tejido</h3>
+      <p>El <b>pez piedra</b> (<i>Synanceia verrucosa</i>) no muerde: tiene 12 a 14 espinas dorsales, cada una con dos glándulas venenosas en la base. Su veneno contiene citotoxinas y neurotoxinas de potencia comparable a la de una cobra, y las espinas pueden perforar la suela de un zapato ligero.</p>
+      <div class="stat"><b>12–14 espinas</b> con glándulas venenosas dobles</div>
+    </article>
+
+    <article class="power">
+      <span class="tag">Defensa química</span>
+      <h3>El globo tóxico</h3>
+      <p>El <b>pez globo</b> (<i>Tetraodontidae</i>) acumula <b>tetrodotoxina</b> en hígado, ovarios e intestinos. Es unas <b>1 200 veces más tóxica que el cianuro</b> y estable al calor: cocinarlo no lo desactiva. La toxina no la produce el pez, sino bacterias de su dieta, y los ejemplares criados en cautividad pueden no tenerla.</p>
+      <div class="stat"><b>1 200×</b> más tóxica que el cianuro</div>
+    </article>
+
+    <article class="power">
+      <span class="tag">Defensa física</span>
+      <h3>Armadura inflable</h3>
+      <p>El mismo pez globo, cuando se amenaza, traga agua y multiplica su volumen. Las escamas se convierten en espinas erectas: un depredador que sí se atreve a morder se encuentra con un púas tóxicas del triple de tamaño.</p>
+      <div class="stat"><b>×3</b> su volumen normal</div>
+    </article>
+
+    <article class="power">
+      <span class="tag">Ataque eléctrico</span>
+      <h3>Radar y descarga</h3>
+      <p>La <b>anguila eléctrica</b> (<i>Electrophorus</i>) usa pulsos de bajo voltaje para «ver» el entorno en aguas turbias —electrorrecepción activa— y ráfagas de alto voltaje para paralizar presas: un pez alcanzado queda inmóvil en 3–4 milisegundos.</p>
+      <div class="stat"><b>3–4 ms</b> para inmovilizar a la presa</div>
+    </article>
+
+    <article class="power">
+      <span class="tag">Supervivencia extrema</span>
+      <h3>Sangre anticongelante</h3>
+      <p>Los <b>nototenioides</b> antárticos producen glicoproteínas anticongelantes que se adhieren a los cristales de hielo y detienen su crecimiento. Gracias a ellas sobreviven en agua de mar a <b>−1,9 °C</b>, por debajo del punto de congelación de su propia sangre.</p>
+      <div class="stat"><b>−1,9 °C</b> el agua donde viven sin congelarse</div>
+    </article>
+
+    <article class="power">
+      <span class="tag">Percepción</span>
+      <h3>Ojos que dividen la luz</h3>
+      <p>Algunos peces de arrecife tienen gotas de aceite coloreadas dentro de los conos de la retina: filtros internos que les permiten distinguir colores que otros peces no ven, incluida la luz ultravioleta. Es un canal de comunicación privado dentro de un arrecife a todo color.</p>
+      <div class="stat"><b>UV</b> longitudes invisibles para otras especies</div>
+    </article>
+  </div>
+</section>
+<section>
+  <div class="sec-head"><span class="num">02</span><h2>Tabla comparativa</h2></div>
+  <p class="lead">Mismos problemas, soluciones distintas. Cifras de referencia de los mecanismos más extremos conocidos entre los peces.</p>
+
+  <div class="table-scroll" style="margin-top:26px">
+    <table>
+      <caption>Datos de referencia recopilados de literatura científica; las cifras varían según especie, tamaño y condiciones.</caption>
+      <thead>
+        <tr>
+          <th scope="col">Especie</th>
+          <th scope="col">Mecanismo</th>
+          <th scope="col">Cifra clave</th>
+          <th scope="col">Uso principal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="name">Pez globo<small>Tetraodontidae</small></td>
+          <td>Tetrodotoxina</td>
+          <td class="spec">1 200× cianuro</td>
+          <td>Defensa; los depredadores aprenden a evitarlo</td>
+        </tr>
+        <tr>
+          <td class="name">Pez piedra<small>Synanceia verrucosa</small></td>
+          <td>Veneno en 12–14 espinas dorsales</td>
+          <td class="spec">2 glándulas / espina</td>
+          <td>Defensa pasiva; puede perforar un calzado ligero</td>
+        </tr>
+        <tr>
+          <td class="name">Anguila eléctrica<small>Electrophorus electricus</small></td>
+          <td>Descarga de alto voltaje</td>
+          <td class="spec">hasta 600 V</td>
+          <td>Caza y defensa</td>
+        </tr>
+        <tr>
+          <td class="name">Anguila eléctrica<small>Electrophorus voltai</small></td>
+          <td>Descarga de alto voltaje</td>
+          <td class="spec">hasta 860 V</td>
+          <td>La descarga más potente registrada en animales</td>
+        </tr>
+        <tr>
+          <td class="name">Raya torpedo<small>Torpediniformes</small></td>
+          <td>Descarga eléctrica</td>
+          <td class="spec">~220 V</td>
+          <td>Defensa; energía del pulso baja, poco riesgo humano</td>
+        </tr>
+        <tr>
+          <td class="name">Nototenio antártico<small>Notothenioidei</small></td>
+          <td>Glicoproteínas anticongelantes</td>
+          <td class="spec">−1,9 °C</td>
+          <td>Sobrevivir en agua más fría que su propia sangre</td>
+        </tr>
+        <tr>
+          <td class="name">Pez vela<small>Istiophorus platypterus</small></td>
+          <td>Aleta dorsal en forma de vela</td>
+          <td class="spec">110 km/h</td>
+          <td>Persecución y giros rápidos</td>
+        </tr>
+        <tr>
+          <td class="name">Rape abisal<small>Melanocetus johnsonii</small></td>
+          <td>Señuelo bioluminiscente</td>
+          <td class="spec">luz propia</td>
+          <td>Atraer presas en la oscuridad total</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><span class="num">03</span><h2>El duelo eléctrico</h2></div>
+  <p class="lead">Dos géneros del mismo linaje sudamericano, separados por cuencas distintas, llegaron a potencias casi idénticas por caminos evolutivos propios. La comparación en la misma escala obliga a mirar dos veces la tabla.</p>
+
+  <div class="duel" style="margin-top:26px">
+    <div class="side">
+      <h3>Electrophorus electricus</h3>
+      <p class="sci">Cuenca del Orinoco y Guayanas</p>
+      <div class="big">480<span class="unit">voltios</span></div>
+      <p>El primer nombre del grupo y el más estudiado durante dos siglos: Humboldt y Faraday midieron sus descargas antes de que existiera la electrofisiología moderna.</p>
+      <div class="bar-wrap">
+        <div class="bar-row"><span>E. electricus</span><div class="bar-track"><div class="bar-fill" style="width:55.8%"></div></div><span class="bar-val">480 V</span></div>
+        <div class="bar-row"><span>E. voltai</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">860 V</span></div>
+      </div>
+    </div>
+    <div class="vs">VS</div>
+    <div class="side">
+      <h3>Electrophorus voltai</h3>
+      <p class="sci">Cuenca del Amazonas</p>
+      <div class="big">860<span class="unit">voltios</span></div>
+      <p>Descrita como especie propia en 2019: la descarga eléctrica más potente registrada en cualquier animal del planeta, por encima del antiguo récord de su pariente.</p>
+    </div>
+  </div>
+  <p class="duel-note"><b>Cómo leer la escala:</b> un enchufe doméstico entrega 220 V. Las rayas torpedo generan una tensión similar, pero liberan muy poca energía por pulso, así que para una persona resultan inofensivas. Lo que hace letal —o al menos demoledor— el caso de <i>Electrophorus</i> no es solo el voltaje: es la corriente de pico, cercana a 1 amperio, concentrada en un blanco a centímetros de distancia.</p>
+</section>
+
+<section>
+  <div class="sec-head"><span class="num">04</span><h2>Preguntas frecuentes</h2></div>
+  <div style="margin-top:24px">
+    <details>
+      <summary>¿El pez globo de acuario es venenoso?</summary>
+      <p>La tetrodotoxina no la fabrica el pez: procede de bacterias que entran por la cadena alimenticia. Los peces globo criados con dietas controladas pueden contener muy poca o ninguna toxina, y por eso la toxicidad varía según la especie, la zona y la época del año. En cualquier caso, manipularlos sin formación sigue siendo una mala idea.</p>
+    </details>
+    <details>
+      <summary>¿Una anguila eléctrica puede matar a una persona?</summary>
+      <p>Es extremadamente improbable que una sola descarga sea letal para un adulto: dura unos dos milisegundos y la fibrilación cardíaca requiere una corriente sostenida mucho mayor. Pero el choque —comparable al de una pistola eléctrica— duele de verdad, puede sentirse a distancia y es un riesgo real para quien manipula estos peces en acuarios o trabajo de campo.</p>
+    </details>
+    <details>
+      <summary>¿Por qué no se congela la sangre de los peces antárticos?</summary>
+      <p>El agua de mar se mantiene líquida hasta cerca de −1,9 °C, más frío que el punto de congelación de la sangre de cualquier pez normal. Las glicoproteínas anticongelantes de los nototenioides se pegan a los cristales de hielo incipientes e impiden que crezcan, con lo que la sangre del pez sigue líquida en agua más fría que ella misma.</p>
+    </details>
+    <details>
+      <summary>¿El pez más rápido es el más veloz en línea recta?</summary>
+      <p>No exactamente. El pez vela lidera las estimaciones de velocidad punta —del orden de 110 km/h—, pero hay especialistas en aceleración y giro, como los atunes, que en distancias cortas resultan más difíciles de seguir. Las comparaciones de velocidad en peces son notoriamente inciertas porque casi nunca se miden en mar abierto.</p>
+    </details>
+  </div>
+</section>
+
+<div class="pagenav">
+  <a href="index.html">← Volver al inicio<small>Los 10 temas del mundo submarino</small></a>
+  <a href="anatomia.html" style="text-align:right">Siguiente: Anatomía de un pez<small>La máquina perfecta, pieza por pieza →</small></a>
+</div>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <h3>Fuentes</h3>
+    <ol class="refs">
+      <li>Fundación iO — <a href="https://fundacionio.com/salud-io/enfermedades/pez-globo-tetrodotoxina/">Pez globo y tetrodotoxina</a></li>
+      <li>Museo Nacional de Historia Natural de Chile — <a href="https://www.mnhn.gob.cl/noticias/peces-excepcionales-ii-los-peces-electricos">Peces excepcionales II: los peces eléctricos</a></li>
+      <li>PNAS — <a href="https://www.pnas.org/doi/10.1073/pnas.1410256111">Antifreeze protein-induced superheating of ice inside Antarctic notothenioid fishes</a></li>
+      <li>HHMI BioInteractive — <a href="https://www.biointeractive.org/sites/default/files/IcefishAdaptationsAntifreeze-Educator-act.pdf">Icefish blood adaptations: antifreeze proteins</a></li>
+      <li>Monaco Nature Encyclopedia — <a href="https://www.monaconatureencyclopedia.com/electrophorus-electricus/?lang=es">Electrophorus electricus</a></li>
+      <li>Wikipedia — <a href="https://es.wikipedia.org/wiki/Synanceia_verrucosa">Synanceia verrucosa</a> · <a href="https://es.wikipedia.org/wiki/Synanceia_horrida">Synanceia horrida</a></li>
+      <li>Animales Biología — <a href="https://peces.animalesbiologia.com/actualidad/peces-globo-familia-tetraodontidae">Familia Tetraodontidae</a></li>
+      <li>Aquaportail — <a href="https://www.aquaportail.com/especies/ficha/pez/4131/electrophorus-electricus">Electrophorus electricus</a></li>
+    </ol>
+    <div class="foot-bottom">
+      <span>Pezquería · Divulgación del mundo submarino</span>
+      <span>Contenido educativo — datos verificados contra fuentes científicas</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
